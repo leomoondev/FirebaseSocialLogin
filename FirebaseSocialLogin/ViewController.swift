@@ -10,6 +10,7 @@ import UIKit
 import FBSDKLoginKit
 import Firebase
 import GoogleSignIn
+import TwitterKit
 
 class ViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDelegate {
 
@@ -19,8 +20,26 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDel
         setupFacebookButtons()
         
         setupGoogleButtons()
+        
+        setupTwitterButton()
     }
     
+    fileprivate func setupTwitterButton() {
+        
+        let twitterButton = TWTRLogInButton { (session, error) in
+            if let err = error {
+                print("Failed to login via Twitter: ", err)
+                return
+            }
+            
+            print("Successfully logged in under Twitter...")
+            
+            
+        }
+        view.addSubview(twitterButton)
+        twitterButton.frame = CGRect(x: 16, y: 116 + 66 + 66 + 66, width: view.frame.width - 32, height: 50)
+        
+    }
     fileprivate func setupGoogleButtons() {
         
         // Add google sign-in button
