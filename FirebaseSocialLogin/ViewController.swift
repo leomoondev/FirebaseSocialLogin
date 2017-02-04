@@ -32,8 +32,23 @@ class ViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInUIDel
                 return
             }
             
-            print("Successfully logged in under Twitter...")
+            //print("Successfully logged in under Twitter...")
             
+            // Let's login with Firebase
+            guard let token = session?.authToken else { return }
+            guard let secret = session?.authTokenSecret else { return }
+            let credentials = FIRTwitterAuthProvider.credential(withToken:
+                token, secret: secret)
+            
+            FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
+                if let err = error {
+                    print("Failed to login to Firebase with Twitter: ", err)
+                    return
+                }
+                
+                print("Successfully created a Firebase-Twitter user: ",
+                      user?.uid ?? "")
+            })
             
         }
         view.addSubview(twitterButton)
